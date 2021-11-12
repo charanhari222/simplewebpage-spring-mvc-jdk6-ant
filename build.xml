@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." default="package" name="home.com">
+
+    <property environment="env"/>
+    <property name="ECLIPSE_HOME" value="../../eclipse/jee-2021-09/eclipse/"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.6"/>
+    <property name="source" value="1.6"/>
+
+	<property name="project.classes.dir" value="build/classes" />
+	<property name="project.web.dir" value="src/main/webapp" />
+	<property name="project.lib.dir" value="${project.web.dir}/WEB-INF/lib" />
+	<property name="project.name" value="${ant.project.name}" />
+	<property name="project.war" value="${project.name}.war" />
+	<property name="TOMCAT_HOME" value="${env.CATALINA_HOME}" />
+	<property name="project.deploy.location" value="${TOMCAT_HOME}/webapps" />
+	
+    <path id="Server Runtime [Apache Tomcat v7.0].libraryclasspath">
+        <pathelement location="${TOMCAT_HOME}/lib/annotations-api.jar"/>
+        <pathelement location="${TOMCAT_HOME}/lib/catalina-ant.jar"/>
+        <pathelement location="${TOMCAT_HOME}/lib/catalina-ha.jar"/>
+        <pathelement location="${TOMCAT_HOME}/lib/catalina-tribes.jar"/>
+        <pathelement location="${TOMCAT_HOME}/lib/catalina.jar"/>
+        <pathelement location="${TOMCAT_HOME}/lib/ecj-3.7.2.jar"/>
+        <pathelement location="${TOMCAT_HOME}/lib/el-api.jar"/>
+        <pathelement location="${TOMCAT_HOME}/lib/jasper-el.jar"/>
+        <pathelement location="${TOMCAT_HOME}/lib/jasper.jar"/>
+        <pathelement location="${TOMCAT_HOME}/lib/jsp-api.jar"/>
+        <pathelement location="${TOMCAT_HOME}/lib/servlet-api.jar"/>
+        <pathelement location="${TOMCAT_HOME}/lib/tomcat-api.jar"/>
+        <pathelement location="${TOMCAT_HOME}/lib/tomcat-coyote.jar"/>
+        <pathelement location="${TOMCAT_HOME}/lib/tomcat-dbcp.jar"/>
+        <pathelement location="${TOMCAT_HOME}/lib/tomcat-i18n-es.jar"/>
+        <pathelement location="${TOMCAT_HOME}/lib/tomcat-i18n-fr.jar"/>
+        <pathelement location="${TOMCAT_HOME}/lib/tomcat-i18n-ja.jar"/>
+        <pathelement location="${TOMCAT_HOME}/lib/tomcat-jdbc.jar"/>
+        <pathelement location="${TOMCAT_HOME}/lib/tomcat-util.jar"/>
+    </path>
+	<path id="Web App Libraries.libraryclasspath">
+        <pathelement location="src/main/webapp/WEB-INF/lib/spring-aop-3.2.8.RELEASE.jar"/>
+        <pathelement location="src/main/webapp/WEB-INF/lib/spring-aspects-3.2.8.RELEASE.jar"/>
+        <pathelement location="src/main/webapp/WEB-INF/lib/spring-beans-3.2.8.RELEASE.jar"/>
+        <pathelement location="src/main/webapp/WEB-INF/lib/spring-build-src-3.2.8.RELEASE.jar"/>
+        <pathelement location="src/main/webapp/WEB-INF/lib/spring-context-3.2.8.RELEASE.jar"/>
+        <pathelement location="src/main/webapp/WEB-INF/lib/spring-context-support-3.2.8.RELEASE.jar"/>
+        <pathelement location="src/main/webapp/WEB-INF/lib/spring-core-3.2.8.RELEASE.jar"/>
+        <pathelement location="src/main/webapp/WEB-INF/lib/spring-expression-3.2.8.RELEASE.jar"/>
+        <pathelement location="src/main/webapp/WEB-INF/lib/spring-framework-bom-3.2.8.RELEASE.jar"/>
+        <pathelement location="src/main/webapp/WEB-INF/lib/spring-instrument-3.2.8.RELEASE.jar"/>
+        <pathelement location="src/main/webapp/WEB-INF/lib/spring-instrument-tomcat-3.2.8.RELEASE.jar"/>
+        <pathelement location="src/main/webapp/WEB-INF/lib/spring-jdbc-3.2.8.RELEASE.jar"/>
+        <pathelement location="src/main/webapp/WEB-INF/lib/spring-jms-3.2.8.RELEASE.jar"/>
+        <pathelement location="src/main/webapp/WEB-INF/lib/spring-orm-3.2.8.RELEASE.jar"/>
+        <pathelement location="src/main/webapp/WEB-INF/lib/spring-oxm-3.2.8.RELEASE.jar"/>
+        <pathelement location="src/main/webapp/WEB-INF/lib/spring-struts-3.2.8.RELEASE.jar"/>
+        <pathelement location="src/main/webapp/WEB-INF/lib/spring-test-3.2.8.RELEASE.jar"/>
+        <pathelement location="src/main/webapp/WEB-INF/lib/spring-tx-3.2.8.RELEASE.jar"/>
+        <pathelement location="src/main/webapp/WEB-INF/lib/spring-web-3.2.8.RELEASE.jar"/>
+        <pathelement location="src/main/webapp/WEB-INF/lib/spring-webmvc-3.2.8.RELEASE.jar"/>
+        <pathelement location="src/main/webapp/WEB-INF/lib/spring-webmvc-portlet-3.2.8.RELEASE.jar"/>
+    </path>
+
+    <path id="classpath.lib">
+        <pathelement location="${project.classes.dir}"/>
+        <path refid="Server Runtime [Apache Tomcat v7.0].libraryclasspath"/>
+        <path refid="Web App Libraries.libraryclasspath"/>
+    </path>
+
+	<target name="clean">
+		<delete dir="${project.classes.dir}" />
+		<delete dir="${project.war}" />
+    </target>
+	
+
+	<target name="init" depends="clean">
+		<mkdir dir="${project.classes.dir}" />
+        <copy includeemptydirs="false" todir="${project.classes.dir}">
+            <fileset dir="src/main/java">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+
+
+	<target name="build" depends="init">
+		<javac destdir="${project.classes.dir}" includeantruntime="false">
+			<src path="src" />
+            <classpath refid="classpath.lib"/>
+        </javac>
+    </target>
+
+
+	<target name="package" depends="build">
+		<war destfile="${project.war}" index="true" webxml="${project.web.dir}/WEB-INF/web.xml">
+			<classes dir="${project.classes.dir}"/>
+            <fileset dir="${project.web.dir}">
+				<include name="**/*.*" />
+			</fileset>
+		</war>
+    </target>
+	
+	
+
+</project>
