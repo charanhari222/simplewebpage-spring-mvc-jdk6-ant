@@ -1,10 +1,10 @@
 version: 0.0
 os: linux
 files:
-  - source: ./**/*
-    destination: /var/www/my-angular-project
+  - source: /
+    destination: /temp
 permissions:
-  - object: /var/www/my-angular-project
+  - object: /temp
     pattern: '**'
     mode: '0755'
     owner: root
@@ -14,7 +14,5 @@ permissions:
       - directory
 hooks:
   ApplicationStart:
-    - location: deploy-scripts/application-start-hook.sh
+    - location: application-start-hook.sh
       timeout: 300
-  # ValidateService:
-  #   - location: deploy-scripts/simulate-failure.sh
