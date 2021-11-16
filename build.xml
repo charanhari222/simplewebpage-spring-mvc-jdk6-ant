@@ -62,7 +62,7 @@
 
     <path id="classpath.lib">
         <pathelement location="${project.classes.dir}"/>
-        <path refid="Server Runtime [Apache Tomcat v7.0].libraryclasspath"/>
+       <!-- <path refid="Server Runtime [Apache Tomcat v7.0].libraryclasspath"/>-->
         <path refid="Web App Libraries.libraryclasspath"/>
     </path>
 
