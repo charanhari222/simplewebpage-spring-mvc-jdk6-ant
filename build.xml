@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project basedir="." default="package" name="home.com">
+<project basedir="." default="package" name="home">
 
     <property environment="env"/>
     <property name="ECLIPSE_HOME" value="../../eclipse/jee-2021-09/eclipse/"/>
