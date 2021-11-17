@@ -6,6 +6,9 @@ phases:
   build:
     commands:
       - ant package
+  post_build:
+    commands:
+      - aws s3 cp *.war s3://antbucketforartifacts/
 artifacts:
    files:
       - '**/*'
